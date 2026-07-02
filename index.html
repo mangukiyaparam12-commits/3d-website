@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Param Mangukiya — Software Engineer in Training</title>
+<meta name="description" content="Param Mangukiya — B.Tech CSE student building with Python, SQL, Web Development and AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-field" aria-hidden="true">
+  <span class="glow glow-a"></span>
+  <span class="glow glow-b"></span>
+  <span class="glow glow-c"></span>
+</div>
+
+<header class="nav" id="siteNav">
+  <a href="#hero" class="logo">PARAM<span class="dot">.</span></a>
+  <nav class="nav-links" id="navLinks">
+    <a href="#hero" data-nav>Home</a>
+    <a href="#about" data-nav>About</a>
+    <a href="#skills" data-nav>Skills</a>
+    <a href="#projects" data-nav>Projects</a>
+    <a href="#contact" data-nav>Contact</a>
+  </nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="hero" class="hero">
+    <div class="hero-text" data-reveal>
+      <p class="eyebrow">&#47;&#47; b.tech &middot; computer science</p>
+      <h1>Hi, I'm<br><span class="highlight">Param&nbsp;Mangukiya</span></h1>
+      <p class="lead">I build with Python, SQL and the web — turning raw data and rough ideas into things that actually run. Currently exploring AI.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Contact me</a>
+        <a href="#projects" class="btn btn-ghost">View my work</a>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span>scroll</div>
+    </div>
+
+    <div class="hero-scene" id="heroScene">
+      <div class="stack" id="stack">
+        <div class="panel panel-1"><span class="panel-tag">.py</span><span class="panel-label">Python</span></div>
+        <div class="panel panel-2"><span class="panel-tag">.sql</span><span class="panel-label">SQL</span></div>
+        <div class="panel panel-3"><span class="panel-tag">.html</span><span class="panel-label">HTML</span></div>
+        <div class="panel panel-4"><span class="panel-tag">.css</span><span class="panel-label">CSS</span></div>
+        <div class="stack-shadow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="about-photo" data-reveal>
+      <div class="photo-frame">
+        <div class="frame-fallback">PM</div>
+        <img src="profile.jpg" alt="Param Mangukiya"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="photo-chip">B.Tech CSE</div>
+    </div>
+
+    <div class="about-text" data-reveal>
+      <p class="eyebrow">About</p>
+      <h2>Building things, one stack at a time.</h2>
+      <p>I'm a B.Tech Computer Science student who likes taking a problem apart until it's just data, logic and a bit of design — then putting it back together as something that works.</p>
+      <p>Most days you'll find me writing Python scripts, wiring up SQL tables, or shaping a webpage until the layout feels right. I'm currently going deeper into AI, with the goal of becoming a software engineer who ships real, useful applications.</p>
+      <div class="about-meta">
+        <div><span class="meta-label">Focus</span><span>Software Engineering</span></div>
+        <div><span class="meta-label">Studying</span><span>B.Tech, CSE</span></div>
+        <div><span class="meta-label">Exploring</span><span>Artificial Intelligence</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="skills">
+    <p class="eyebrow" data-reveal>Skills</p>
+    <h2 data-reveal>What I work with</h2>
+
+    <div class="skill-grid">
+      <div class="skill-card" data-reveal>
+        <div class="skill-card-inner">
+          <div class="skill-face skill-front">
+            <span class="skill-glyph">&gt;_</span>
+            <span class="skill-name">Python</span>
+          </div>
+          <div class="skill-face skill-back">
+            <p>My daily driver for scripting, data analysis and automation with Pandas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card" data-reveal>
+        <div class="skill-card-inner">
+          <div class="skill-face skill-front">
+            <span class="skill-glyph">&#9776;</span>
+            <span class="skill-name">SQL</span>
+          </div>
+          <div class="skill-face skill-back">
+            <p>Designing tables, joins and queries to make raw data answer real questions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card" data-reveal>
+        <div class="skill-card-inner">
+          <div class="skill-face skill-front">
+            <span class="skill-glyph">&lt;/&gt;</span>
+            <span class="skill-name">HTML</span>
+          </div>
+          <div class="skill-face skill-back">
+            <p>Semantic, accessible structure — the skeleton every page I build stands on.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card" data-reveal>
+        <div class="skill-card-inner">
+          <div class="skill-face skill-front">
+            <span class="skill-glyph">&#10022;</span>
+            <span class="skill-name">CSS</span>
+          </div>
+          <div class="skill-face skill-back">
+            <p>Layout, motion and detail — this entire 3D site is hand-styled CSS.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="projects">
+    <p class="eyebrow" data-reveal>Projects</p>
+    <h2 data-reveal>Selected work</h2>
+
+    <div class="project-grid">
+
+      <article class="project-card" data-reveal data-tilt>
+        <div class="project-window">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <div class="window-body">
+            <span class="code-line w70"></span>
+            <span class="code-line w40 accent"></span>
+            <span class="code-line w85"></span>
+            <span class="code-line w55"></span>
+            <span class="code-line w30 accent-2"></span>
+          </div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">PYTHON &middot; PANDAS</span>
+          <h3>Employee Analytics System</h3>
+          <p>Analyzes employee data — salaries, departments and experience — to surface patterns worth acting on.</p>
+          <a href="https://github.com/Parammangukiya/python-learning-journey/blob/main/employee_analytics_system.py" target="_blank" rel="noopener">View project &rarr;</a>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal data-tilt>
+        <div class="project-window">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <div class="window-body">
+            <span class="code-line w50 accent-2"></span>
+            <span class="code-line w80"></span>
+            <span class="code-line w35"></span>
+            <span class="code-line w65 accent"></span>
+            <span class="code-line w45"></span>
+          </div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">SQL &middot; DATABASE DESIGN</span>
+          <h3>Company Management SQL Project</h3>
+          <p>Relational tables and queries built around joins and aggregate functions to model a real company.</p>
+          <a href="https://github.com/Parammangukiya/python-learning-journey/blob/main/sql/company_management_project.sql" target="_blank" rel="noopener">View project &rarr;</a>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal data-tilt>
+        <div class="project-window">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <div class="window-body">
+            <span class="code-line w60 accent"></span>
+            <span class="code-line w30"></span>
+            <span class="code-line w75"></span>
+            <span class="code-line w40 accent-2"></span>
+            <span class="code-line w55"></span>
+          </div>
+        </div>
+        <div class="project-info">
+          <span class="project-tag">HTML &middot; CSS &middot; FLEXBOX</span>
+          <h3>Original Portfolio Website</h3>
+          <p>My first portfolio — a responsive, flexbox-built layout. This site is its 3D successor.</p>
+          <a href="https://paramportfolio-tan.vercel.app/" target="_blank" rel="noopener">View project &rarr;</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="contact-card" data-reveal data-tilt>
+      <p class="eyebrow">Contact</p>
+      <h2>Let's build something.</h2>
+      <p>Open to internships, collaborations and software development opportunities — my inbox is always on.</p>
+      <a href="mailto:mangukiyaparam11@gmail.com" class="btn btn-primary">Send an email</a>
+      <div class="contact-links">
+        <a href="https://github.com/Parammangukiya" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/param-mangukiya-8b58b1381" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:mangukiyaparam11@gmail.com">Email</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>&copy; 2026 Param Mangukiya. All rights reserved.</p>
+  <p class="footer-sub">Built with HTML &amp; CSS — in 3D.</p>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Mobile nav ---------- */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    var open = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.querySelectorAll('[data-nav]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* ---------- Header shadow on scroll ---------- */
+  var header = document.getElementById('siteNav');
+  window.addEventListener('scroll', function () {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in-view'); });
+  }
+
+  /* ---------- Hero 3D stack parallax ---------- */
+  var scene = document.getElementById('heroScene');
+  var stack = document.getElementById('stack');
+  if (scene && stack && !reduceMotion) {
+    var rectCache = null;
+    scene.addEventListener('mousemove', function (e) {
+      rectCache = rectCache || scene.getBoundingClientRect();
+      var x = (e.clientX - rectCache.left) / rectCache.width - 0.5;
+      var y = (e.clientY - rectCache.top) / rectCache.height - 0.5;
+      stack.style.setProperty('--tiltY', (x * 26) + 'deg');
+      stack.style.setProperty('--tiltX', (y * -18) + 'deg');
+    });
+    scene.addEventListener('mouseleave', function () {
+      stack.style.setProperty('--tiltY', '0deg');
+      stack.style.setProperty('--tiltX', '0deg');
+    });
+    window.addEventListener('resize', function () { rectCache = null; }, { passive: true });
+  }
+
+  /* ---------- Card tilt (projects + contact) ---------- */
+  if (!reduceMotion) {
+    document.querySelectorAll('[data-tilt]').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.setProperty('--rx', (y * -8) + 'deg');
+        card.style.setProperty('--ry', (x * 10) + 'deg');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
+
+  /* ---------- Active nav link on scroll ---------- */
+  var sections = document.querySelectorAll('main section[id]');
+  var navAnchors = document.querySelectorAll('.nav-links a');
+  if ('IntersectionObserver' in window) {
+    var navIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          navAnchors.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    sections.forEach(function (s) { navIo.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
