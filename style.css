@@ -1,24 +1,25 @@
 /* =========================================================
-  PARAM MANGUKIYA — 3D PORTFOLIO
-  Design tokens
+  PARAM MANGUKIYA — PORTFOLIO
+  Theme: "commit graph" — a developer's page that fills in
+  like a contribution graph as you move through it.
    ========================================================= */
 :root{
-  --bg:            #0a0c14;
-  --bg-panel:      #12151f;
-  --bg-elevated:   #171b28;
-  --line:          rgba(255,255,255,0.08);
+  --bg:            #090c11;
+  --bg-panel:      #10151c;
+  --bg-elevated:   #161d26;
+  --line:          rgba(255,255,255,0.09);
   --line-soft:     rgba(255,255,255,0.05);
 
-  --text-primary:  #eaedf6;
-  --text-muted:    #8891a8;
-  --text-faint:    #565d72;
+  --text-primary:  #edf1f6;
+  --text-muted:    #8996a8;
+  --text-faint:    #525c6c;
 
-  --accent-blue:   #7c9eff;
-  --accent-blue-soft: rgba(124,158,255,0.16);
-  --accent-amber:  #f2c572;
-  --accent-amber-soft: rgba(242,197,114,0.16);
-  --accent-violet: #b98bff;
-  --accent-violet-soft: rgba(185,139,255,0.16);
+  --accent-green:      #39d353;
+  --accent-green-soft: rgba(57,211,83,0.16);
+  --accent-copper:      #e8935c;
+  --accent-copper-soft: rgba(232,147,92,0.16);
+  --accent-periwinkle:      #8b93ff;
+  --accent-periwinkle-soft: rgba(139,147,255,0.16);
 
   --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
   --font-body:    'Inter', 'Segoe UI', sans-serif;
@@ -29,6 +30,10 @@
   --radius-lg: 24px;
 
   --ease: cubic-bezier(.22,.9,.32,1);
+
+  /* driven live by JS as the page scrolls */
+  --scroll-progress: 0;
+  --scroll-hue: 0deg;
 }
 
 /* =========================================================
@@ -59,10 +64,10 @@ img{ max-width:100%; display:block; }
 ul{ list-style:none; margin:0; padding:0; }
 button{ font-family:inherit; }
 
-::selection{ background:var(--accent-blue-soft); color:var(--text-primary); }
+::selection{ background:var(--accent-green-soft); color:var(--text-primary); }
 
 :focus-visible{
-  outline:2px solid var(--accent-blue);
+  outline:2px solid var(--accent-green);
   outline-offset:3px;
   border-radius:4px;
 }
@@ -72,7 +77,7 @@ button{ font-family:inherit; }
   font-size:.78rem;
   letter-spacing:.12em;
   text-transform:uppercase;
-  color:var(--accent-blue);
+  color:var(--accent-green);
   margin:0 0 .9em;
 }
 
@@ -84,7 +89,9 @@ section{
 }
 
 /* =========================================================
-  Ambient background field  (Three.js canvas layer added)
+  Ambient background field (Three.js canvas layer)
+  Hue drifts slowly as the page scrolls — the whole
+  ambience shifts through the accent palette on the way down.
    ========================================================= */
 .bg-field{
   position:fixed;
@@ -92,8 +99,9 @@ section{
   z-index:-1;
   overflow:hidden;
   background: var(--bg);
+  filter: hue-rotate(var(--scroll-hue));
+  transition: filter .25s linear;
 }
-/* Three.js canvas fills the whole fixed layer */
 #bgCanvas{
   position:absolute;
   inset:0;
@@ -102,7 +110,6 @@ section{
   display:block;
   pointer-events:none;
 }
-/* Soft colour glows layered on top of the canvas */
 .glow{
   position:absolute;
   width:44vw;
@@ -112,12 +119,12 @@ section{
   opacity:.22;
   pointer-events:none;
 }
-.glow-a{ top:-12%; left:-10%; background:var(--accent-blue); }
-.glow-b{ top:20%; right:-14%; background:var(--accent-violet); opacity:.14; }
-.glow-c{ bottom:-16%; left:24%; background:var(--accent-amber); opacity:.10; }
+.glow-a{ top:-12%; left:-10%; background:var(--accent-green); }
+.glow-b{ top:20%; right:-14%; background:var(--accent-periwinkle); opacity:.14; }
+.glow-c{ bottom:-16%; left:24%; background:var(--accent-copper); opacity:.10; }
 
 /* =========================================================
-  Nav
+  Nav + "commit graph" scroll progress strip
    ========================================================= */
 .nav{
   position:fixed;
@@ -126,24 +133,25 @@ section{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:20px 32px;
+  gap:20px;
+  padding:18px 32px 10px;
   transition:background .35s var(--ease), border-color .35s var(--ease), padding .35s var(--ease);
   border-bottom:1px solid transparent;
 }
 .nav.scrolled{
-  background:rgba(10,12,20,.72);
+  background:rgba(9,12,17,.74);
   backdrop-filter:blur(14px) saturate(140%);
   -webkit-backdrop-filter:blur(14px) saturate(140%);
   border-bottom:1px solid var(--line);
-  padding:14px 32px;
 }
 .logo{
   font-family:var(--font-display);
   font-weight:700;
   font-size:1.05rem;
   letter-spacing:.04em;
+  white-space:nowrap;
 }
-.logo .dot{ color:var(--accent-amber); }
+.logo .dot{ color:var(--accent-green); }
 
 .nav-links{
   display:flex;
@@ -162,7 +170,7 @@ section{
   position:absolute;
   left:0; bottom:-2px;
   width:0; height:1px;
-  background:var(--accent-blue);
+  background:var(--accent-green);
   transition:width .3s var(--ease);
 }
 .nav-links a:hover,
@@ -189,6 +197,28 @@ section{
 .nav-toggle.open span:nth-child(2){ opacity:0; }
 .nav-toggle.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
 
+/* commit-graph strip: fills in square by square as you scroll */
+.commit-strip{
+  position:absolute;
+  left:32px; right:32px; bottom:0;
+  display:grid;
+  grid-template-columns:repeat(48, 1fr);
+  gap:3px;
+  pointer-events:none;
+}
+.commit-strip i{
+  display:block;
+  width:100%;
+  aspect-ratio:1;
+  border-radius:2px;
+  background:var(--line-soft);
+  transition:background .25s ease, box-shadow .25s ease;
+}
+.commit-strip i.lit{
+  background:var(--accent-green);
+  box-shadow:0 0 8px rgba(57,211,83,.55);
+}
+
 /* =========================================================
   Buttons
    ========================================================= */
@@ -205,27 +235,34 @@ section{
   border:1px solid transparent;
 }
 .btn-primary{
-  background:var(--accent-blue);
-  color:#0a0c14;
+  background:var(--accent-green);
+  color:#04140a;
   font-weight:600;
-  box-shadow:0 10px 30px -10px rgba(124,158,255,.55);
+  box-shadow:0 10px 30px -10px rgba(57,211,83,.55);
 }
-.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 16px 34px -10px rgba(124,158,255,.7); }
+.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 16px 34px -10px rgba(57,211,83,.7); }
 .btn-ghost{
   border-color:var(--line);
   color:var(--text-primary);
 }
-.btn-ghost:hover{ border-color:var(--accent-blue); transform:translateY(-3px); }
+.btn-ghost:hover{ border-color:var(--accent-green); transform:translateY(-3px); }
 
 /* =========================================================
   Reveal-on-scroll
+  --reveal is set continuously (0..1) by JS from each
+  element's intersection ratio, so the motion tracks the
+  scrollbar instead of just switching on once.
    ========================================================= */
 [data-reveal]{
-  opacity:0;
-  transform:translateY(26px);
-  transition:opacity .8s var(--ease), transform .8s var(--ease);
+  --reveal: 0;
+  opacity:var(--reveal);
+  transform:translateY(calc(28px * (1 - var(--reveal)))) scale(calc(0.98 + 0.02 * var(--reveal)));
+  transition:opacity .1s linear, transform .1s linear;
+  will-change:opacity, transform;
 }
-[data-reveal].in-view{ opacity:1; transform:none; }
+[data-reveal].settled{
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
 
 /* =========================================================
   HERO
@@ -236,21 +273,21 @@ section{
   grid-template-columns:1.05fr .95fr;
   align-items:center;
   gap:40px;
-  padding-top:140px;
+  padding-top:150px;
 }
-.hero-text .eyebrow{ color:var(--accent-amber); }
+.hero-text .eyebrow{ color:var(--accent-copper); }
 .hero h1{
   font-size:clamp(2.4rem, 5.2vw, 4rem);
   color:var(--text-primary);
 }
 .hero .highlight{
-  background:linear-gradient(100deg, var(--accent-blue), var(--accent-violet) 65%);
+  background:linear-gradient(100deg, var(--accent-green), var(--accent-periwinkle) 65%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
 }
 .hero .lead{
-  max-width:46ch;
+  max-width:48ch;
   font-size:1.05rem;
   color:var(--text-muted);
   margin-bottom:2em;
@@ -277,7 +314,7 @@ section{
   content:'';
   position:absolute;
   top:-100%; left:0; right:0; height:100%;
-  background:var(--accent-blue);
+  background:var(--accent-green);
   animation:scrollDrip 1.8s var(--ease) infinite;
 }
 @keyframes scrollDrip{
@@ -286,10 +323,12 @@ section{
   100%{ top:100%; }
 }
 
-/* ---- The Stack (signature 3D element) ---- */
+/* ---- The Stack (signature 3D element) ----
+   Panels separate further apart the deeper you scroll
+   through the hero — driven by --spread from JS. */
 .hero-scene{
   perspective:1400px;
-  height:460px;
+  height:500px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -297,6 +336,7 @@ section{
 .stack{
   --tiltX: 0deg;
   --tiltY: 0deg;
+  --spread: 1;
   position:relative;
   width:320px;
   height:320px;
@@ -313,7 +353,7 @@ section{
   position:absolute;
   inset:0;
   width:280px;
-  height:170px;
+  height:150px;
   margin:auto;
   border-radius:var(--radius-md);
   background:linear-gradient(155deg, var(--bg-elevated), var(--bg-panel));
@@ -322,28 +362,32 @@ section{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  padding:22px 24px;
+  padding:20px 22px;
   backface-visibility:hidden;
+  transition:transform .2s linear;
 }
-.panel-1{ transform:translateZ(0px) translateY(60px); }
-.panel-2{ transform:translateZ(46px) translateY(20px); border-color:var(--accent-blue-soft); }
-.panel-3{ transform:translateZ(92px) translateY(-20px); border-color:var(--accent-violet-soft); }
-.panel-4{ transform:translateZ(138px) translateY(-60px); border-color:var(--accent-amber-soft); }
+.panel-1{ transform:translateZ(0px) translateY(calc(64px * var(--spread))); }
+.panel-2{ transform:translateZ(38px) translateY(calc(24px * var(--spread))); border-color:var(--accent-green-soft); }
+.panel-3{ transform:translateZ(76px) translateY(calc(-16px * var(--spread))); border-color:var(--accent-periwinkle-soft); }
+.panel-4{ transform:translateZ(114px) translateY(calc(-56px * var(--spread))); border-color:var(--accent-copper-soft); }
+.panel-5{ transform:translateZ(152px) translateY(calc(-96px * var(--spread))); border-color:var(--accent-green-soft); }
+.panel-5 .panel-label{ color:var(--accent-green); }
+.panel-5 .panel-tag{ color:var(--accent-green); opacity:.8; }
 
 .panel-tag{
   font-family:var(--font-mono);
-  font-size:.75rem;
+  font-size:.72rem;
   color:var(--text-faint);
 }
 .panel-label{
   font-family:var(--font-display);
-  font-size:1.3rem;
+  font-size:1.15rem;
   font-weight:600;
 }
 .panel-1 .panel-label{ color:var(--text-primary); }
-.panel-2 .panel-label{ color:var(--accent-blue); }
-.panel-3 .panel-label{ color:var(--accent-violet); }
-.panel-4 .panel-label{ color:var(--accent-amber); }
+.panel-2 .panel-label{ color:var(--accent-green); }
+.panel-3 .panel-label{ color:var(--accent-periwinkle); }
+.panel-4 .panel-label{ color:var(--accent-copper); }
 
 .stack-shadow{
   position:absolute;
@@ -395,15 +439,15 @@ section{
   font-weight:700;
   color:var(--text-faint);
   background:
-    radial-gradient(circle at 30% 20%, var(--accent-blue-soft), transparent 60%),
-    radial-gradient(circle at 80% 80%, var(--accent-violet-soft), transparent 60%);
+    radial-gradient(circle at 30% 20%, var(--accent-green-soft), transparent 60%),
+    radial-gradient(circle at 80% 80%, var(--accent-periwinkle-soft), transparent 60%);
 }
 .photo-chip{
   position:absolute;
   bottom:-18px; right:-14px;
   background:var(--bg-elevated);
   border:1px solid var(--line);
-  color:var(--accent-amber);
+  color:var(--accent-copper);
   font-family:var(--font-mono);
   font-size:.75rem;
   padding:.6em 1em;
@@ -412,7 +456,7 @@ section{
 }
 .about-text h2{
   font-size:clamp(1.7rem,3vw,2.3rem);
-  max-width:14ch;
+  max-width:16ch;
 }
 .about-text p{ max-width:58ch; }
 .about-meta{
@@ -435,14 +479,14 @@ section{
 /* =========================================================
   SKILLS
    ========================================================= */
-.skills h2{ font-size:clamp(1.8rem,3.4vw,2.5rem); max-width:16ch; }
+.skills h2{ font-size:clamp(1.8rem,3.4vw,2.5rem); max-width:18ch; }
 .skill-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:24px;
+  gap:22px;
   margin-top:2.6rem;
 }
-.skill-card{ perspective:1000px; height:190px; }
+.skill-card{ perspective:1000px; height:180px; }
 .skill-card-inner{
   position:relative;
   width:100%; height:100%;
@@ -455,7 +499,7 @@ section{
   border-radius:var(--radius-md);
   border:1px solid var(--line);
   backface-visibility:hidden;
-  padding:24px;
+  padding:22px;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -463,23 +507,99 @@ section{
 .skill-front{
   background:linear-gradient(160deg, var(--bg-elevated), var(--bg-panel));
   align-items:flex-start;
-  gap:.8rem;
+  gap:.7rem;
 }
 .skill-glyph{
   font-family:var(--font-mono);
-  font-size:1.6rem;
-  color:var(--accent-blue);
+  font-size:1.5rem;
+  color:var(--accent-green);
 }
 .skill-name{
   font-family:var(--font-display);
-  font-size:1.2rem;
+  font-size:1.1rem;
   font-weight:600;
 }
 .skill-back{
-  background:linear-gradient(160deg, var(--accent-blue-soft), var(--bg-panel) 70%);
+  background:linear-gradient(160deg, var(--accent-green-soft), var(--bg-panel) 70%);
   transform:rotateY(180deg);
 }
-.skill-back p{ color:var(--text-primary); font-size:.92rem; margin:0; }
+.skill-back p{ color:var(--text-primary); font-size:.88rem; margin:0; }
+
+/* =========================================================
+  ROADMAP — learning journey, scroll-filled rail
+   ========================================================= */
+.roadmap h2{ font-size:clamp(1.8rem,3.4vw,2.5rem); max-width:20ch; }
+.roadmap-rail{
+  position:relative;
+  margin-top:3.2rem;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px;
+}
+.roadmap-rail::before{
+  content:'';
+  position:absolute;
+  top:11px; left:0; right:0;
+  height:2px;
+  background:var(--line);
+}
+.roadmap-rail::after{
+  content:'';
+  position:absolute;
+  top:11px; left:0;
+  height:2px;
+  width:calc(var(--rail-fill, 0) * 100%);
+  background:linear-gradient(90deg, var(--accent-green), var(--accent-copper));
+  transition:width .15s linear;
+  box-shadow:0 0 10px rgba(57,211,83,.6);
+}
+.roadmap-stage{ position:relative; padding-top:36px; }
+.roadmap-stage::before{
+  content:'';
+  position:absolute;
+  top:0; left:0;
+  width:24px; height:24px;
+  border-radius:50%;
+  background:var(--bg-panel);
+  border:2px solid var(--line);
+  z-index:2;
+}
+.roadmap-stage.is-lit::before{
+  border-color:var(--accent-green);
+  background:var(--accent-green);
+  box-shadow:0 0 14px rgba(57,211,83,.65);
+}
+.roadmap-stage .stage-label{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--text-faint);
+  display:block;
+  margin-bottom:.6em;
+}
+.roadmap-stage h3{ font-size:1.15rem; margin-bottom:.7em; }
+.chip-row{ display:flex; flex-wrap:wrap; gap:.5rem; }
+.chip{
+  font-family:var(--font-mono);
+  font-size:.74rem;
+  padding:.4em .8em;
+  border-radius:999px;
+  border:1px solid var(--line);
+  color:var(--text-muted);
+  background:var(--bg-panel);
+}
+.roadmap-stage.done .chip{ border-color:var(--accent-green-soft); color:var(--text-primary); }
+.roadmap-stage.now .chip{ border-color:var(--accent-copper-soft); color:var(--text-primary); }
+.roadmap-stage.now .chip.pulse{
+  border-color:var(--accent-copper);
+  animation:chipPulse 1.8s ease-in-out infinite;
+}
+@keyframes chipPulse{
+  0%,100%{ box-shadow:0 0 0 rgba(232,147,92,0); }
+  50%{ box-shadow:0 0 12px rgba(232,147,92,.55); }
+}
+.roadmap-stage.next .chip{ border-style:dashed; color:var(--text-faint); }
 
 /* =========================================================
   PROJECTS
@@ -491,6 +611,8 @@ section{
   gap:26px;
   margin-top:2.6rem;
 }
+.project-grid .project-card:nth-child(4),
+.project-grid .project-card:nth-child(5){ grid-column:span 1; }
 .project-card{
   --rx: 0deg;
   --ry: 0deg;
@@ -502,17 +624,17 @@ section{
   transform:rotateX(var(--rx)) rotateY(var(--ry));
   transition:transform .35s var(--ease), border-color .35s var(--ease);
 }
-.project-card:hover{ border-color:var(--accent-blue-soft); }
+.project-card:hover{ border-color:var(--accent-green-soft); }
 .project-window{ padding:18px; background:var(--bg-elevated); }
 .window-bar{ display:flex; gap:6px; margin-bottom:14px; }
 .window-bar i{ width:9px; height:9px; border-radius:50%; background:var(--text-faint); display:block; opacity:.5; }
 .window-bar i:nth-child(1){ background:#ff8a8a; opacity:.7; }
-.window-bar i:nth-child(2){ background:var(--accent-amber); opacity:.7; }
-.window-bar i:nth-child(3){ background:#8affc1; opacity:.7; }
+.window-bar i:nth-child(2){ background:var(--accent-copper); opacity:.7; }
+.window-bar i:nth-child(3){ background:var(--accent-green); opacity:.7; }
 .window-body{ display:flex; flex-direction:column; gap:10px; padding:6px 4px 14px; }
 .code-line{ height:8px; border-radius:4px; background:var(--line); }
-.code-line.accent{ background:var(--accent-blue-soft); }
-.code-line.accent-2{ background:var(--accent-amber-soft); }
+.code-line.accent{ background:var(--accent-green-soft); }
+.code-line.accent-2{ background:var(--accent-copper-soft); }
 .w30{ width:30%; } .w35{ width:35%; } .w40{ width:40%; } .w45{ width:45%; }
 .w50{ width:50%; } .w55{ width:55%; } .w60{ width:60%; } .w65{ width:65%; }
 .w70{ width:70%; } .w75{ width:75%; } .w80{ width:80%; } .w85{ width:85%; }
@@ -522,7 +644,7 @@ section{
   font-family:var(--font-mono);
   font-size:.68rem;
   letter-spacing:.08em;
-  color:var(--accent-blue);
+  color:var(--accent-green);
 }
 .project-info h3{
   font-size:1.15rem;
@@ -532,7 +654,7 @@ section{
 .project-info a{
   font-family:var(--font-mono);
   font-size:.82rem;
-  color:var(--accent-amber);
+  color:var(--accent-copper);
   transition:letter-spacing .25s var(--ease);
 }
 .project-info a:hover{ letter-spacing:.03em; }
@@ -554,8 +676,8 @@ section{
   border-radius:var(--radius-lg);
   border:1px solid var(--line);
   background:
-    radial-gradient(circle at 30% 0%, var(--accent-blue-soft), transparent 55%),
-    radial-gradient(circle at 80% 100%, var(--accent-violet-soft), transparent 55%),
+    radial-gradient(circle at 30% 0%, var(--accent-green-soft), transparent 55%),
+    radial-gradient(circle at 80% 100%, var(--accent-periwinkle-soft), transparent 55%),
     var(--bg-panel);
 }
 .contact-card .eyebrow{ justify-content:center; display:flex; }
@@ -570,7 +692,7 @@ section{
   font-size:.85rem;
 }
 .contact-links a{ color:var(--text-muted); position:relative; }
-.contact-links a:hover{ color:var(--accent-blue); }
+.contact-links a:hover{ color:var(--accent-green); }
 
 /* =========================================================
   FOOTER
@@ -589,12 +711,17 @@ section{
   Responsive
    ========================================================= */
 @media (max-width: 980px){
-  .hero{ grid-template-columns:1fr; padding-top:120px; text-align:left; }
-  .hero-scene{ height:360px; order:-1; }
+  .hero{ grid-template-columns:1fr; padding-top:130px; text-align:left; }
+  .hero-scene{ height:400px; order:-1; }
   .about{ grid-template-columns:1fr; }
   .about-photo{ max-width:260px; }
   .skill-grid{ grid-template-columns:repeat(2,1fr); }
   .project-grid{ grid-template-columns:1fr; }
+  .roadmap-rail{ grid-template-columns:1fr; gap:40px; }
+  .roadmap-rail::before, .roadmap-rail::after{ top:0; left:11px; right:auto; width:2px; height:100%; }
+  .roadmap-rail::after{ width:2px; height:calc(var(--rail-fill, 0) * 100%); }
+  .roadmap-stage{ padding-top:0; padding-left:44px; }
+  .roadmap-stage::before{ top:0; left:0; }
 }
 
 @media (max-width: 720px){
@@ -603,7 +730,7 @@ section{
     top:64px; right:20px; left:20px;
     flex-direction:column;
     gap:0;
-    background:rgba(14,17,27,.96);
+    background:rgba(13,17,24,.96);
     backdrop-filter:blur(16px);
     border:1px solid var(--line);
     border-radius:var(--radius-md);
@@ -623,6 +750,7 @@ section{
   .about-meta{ gap:1.4rem; }
   .contact-card{ padding:44px 24px; }
   .contact-links{ flex-wrap:wrap; gap:1.2rem; }
+  .commit-strip{ grid-template-columns:repeat(24, 1fr); left:16px; right:16px; }
 }
 
 /* =========================================================
@@ -631,4 +759,5 @@ Reduced motion
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
   .stack{ animation:none; }
+  [data-reveal]{ opacity:1; transform:none; }
 }
